@@ -4,21 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Focus Mode">
 <title>Focus Mode</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #C9A84C;
-    --gold-dim: #8a6f30;
-    --black: #0a0a0a;
-    --dark: #111111;
-    --card: #161616;
-    --card2: #1c1c1c;
-    --border: #2a2a2a;
-    --text: #e8e8e8;
-    --muted: #777;
+    --blue: #1D4ED8;
+    --blue-dark: #16389C;
+    --ink: #111111;
+    --paper: #FFFFFF;
+    --page: #F3F3F1;
+    --muted: #8a8a8a;
+    --line: #111111;
+    --soft-line: #E2E2DE;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
@@ -26,633 +25,443 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   body {
-    background: var(--black);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    font-family: 'Barlow', sans-serif;
     font-size: 15px;
     min-height: 100vh;
-    padding-bottom: calc(80px + var(--safe-bottom));
-    overscroll-behavior: none;
+    padding-bottom: calc(84px + var(--safe-bottom));
   }
 
-  /* TOP BAR */
+  /* ── TOP BAR ─────────────────────────── */
   .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,10,10,0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: calc(var(--safe-top) + 14px) 20px 14px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    background: var(--paper);
+    padding: calc(var(--safe-top) + 16px) 20px 12px;
+    border-bottom: 3px solid var(--ink);
+    display: flex; align-items: baseline; justify-content: space-between;
   }
-
   .topbar-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.01em;
+    color: var(--ink);
   }
-
+  .topbar-title span { color: var(--blue); }
   .topbar-date {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 11px; color: var(--ink);
+    letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
   }
 
-  /* TABS */
+  /* ── TABS ────────────────────────────── */
   .tabs {
-    position: fixed;
-    bottom: 0;
-    left: 0; right: 0;
-    z-index: 100;
-    background: rgba(10,10,10,0.97);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid var(--border);
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: var(--paper);
+    border-top: 3px solid var(--ink);
     display: flex;
     padding-bottom: var(--safe-bottom);
   }
-
   .tab {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    padding: 10px 0;
-    cursor: pointer;
-    border: none;
-    background: none;
+    flex: 1; padding: 12px 0 10px;
+    border: none; background: none; cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: color 0.2s;
+  }
+  .tab.active { color: var(--blue); }
+  .tab.active::after {
+    content: ""; display: block; width: 22px; height: 3px;
+    background: var(--blue); margin: 5px auto 0;
   }
 
-  .tab.active { color: var(--gold); }
-  .tab-icon { font-size: 20px; line-height: 1; }
-
-  /* PAGES */
-  .page { display: none; padding: 20px; }
+  /* ── PAGES ───────────────────────────── */
+  .page { display: none; padding: 22px 18px; }
   .page.active { display: block; }
 
-  /* CARDS */
+  .section-header {
+    font-family: 'Oswald', sans-serif;
+    font-size: 42px; font-weight: 700;
+    text-transform: uppercase; line-height: 1.0;
+    color: var(--ink);
+  }
+  .section-header span { color: var(--blue); }
+  .section-sub {
+    font-size: 11px; color: var(--ink);
+    letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500;
+    margin: 8px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--ink);
+  }
+
+  /* ── CARDS ───────────────────────────── */
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
+    background: var(--paper);
+    border: 1px solid var(--soft-line);
+    padding: 18px;
+    margin-bottom: 18px;
   }
-
-  .card-gold {
-    background: linear-gradient(135deg, #1a1508, #0f0e0a);
-    border-color: var(--gold-dim);
-  }
-
   .card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.02em;
+    color: var(--ink);
+    padding-bottom: 10px; margin-bottom: 6px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .card-kicker {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blue); font-weight: 600; margin-bottom: 4px;
   }
 
-  /* DECLARATION */
-  .declaration {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
-    font-weight: 300;
-    line-height: 1.7;
-    color: #d8d8d8;
-    font-style: italic;
+  /* ── DARK BANNER (weekly deal style) ─── */
+  .banner {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 18px;
+    margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .banner-kicker { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #bbb; margin-bottom: 4px; }
+  .banner-title { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; line-height: 1.15; }
+  .banner-title em { font-style: normal; color: #7AA2FF; }
+  .banner-sub { font-size: 12px; color: #bbb; margin-top: 4px; }
+  .banner-tag {
+    background: var(--blue); color: #fff;
+    font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 24px;
+    padding: 10px 16px; transform: rotate(2deg); white-space: nowrap;
   }
 
-  .declaration strong {
-    font-style: normal;
-    font-weight: 600;
-    color: var(--gold);
+  /* ── MENU-STYLE LIST ITEMS ───────────── */
+  .item {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--soft-line);
   }
+  .item:last-child { border-bottom: none; }
+  .item-name {
+    font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.02em; color: var(--ink);
+  }
+  .item-desc { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-top: 2px; }
+  .item-tag {
+    border: 1.5px solid var(--ink);
+    font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 12px;
+    padding: 4px 9px; transform: rotate(-1.5deg); white-space: nowrap;
+    color: var(--ink); flex-shrink: 0;
+  }
+  .item-tag.blue { border-color: var(--blue); color: var(--blue); }
 
-  /* NON-NEGOTIABLES */
+  /* ── NON-NEGOTIABLES ─────────────────── */
   .nonneg-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 13px 0; border-bottom: 1px solid var(--soft-line);
     cursor: pointer;
   }
-
   .nonneg-item:last-child { border-bottom: none; }
-
   .nonneg-check {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    transition: all 0.25s;
-    font-size: 13px;
+    width: 26px; height: 26px; flex-shrink: 0; margin-top: 1px;
+    border: 2px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+    transition: all 0.2s;
   }
-
-  .nonneg-check.done {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--black);
+  .nonneg-check.done { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .nonneg-label {
+    font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600;
+    text-transform: uppercase; color: var(--ink);
   }
-
-  .nonneg-text { flex: 1; }
-  .nonneg-label { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
-  .nonneg-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
-
+  .nonneg-sub { font-size: 12px; color: var(--muted); margin-top: 2px; letter-spacing: 0.03em; }
   .nonneg-item.done-item .nonneg-label { color: var(--muted); text-decoration: line-through; }
 
-  /* PROGRESS BAR */
-  .progress-wrap { margin-bottom: 16px; }
+  /* ── PROGRESS ────────────────────────── */
+  .progress-wrap { margin: 6px 0 14px; }
   .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--ink); font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px;
   }
-  .progress-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-    border-radius: 2px;
-    transition: width 0.4s ease;
-  }
+  .progress-bar { height: 6px; background: var(--soft-line); }
+  .progress-fill { height: 100%; background: var(--blue); transition: width 0.4s ease; }
 
-  /* WORKOUT */
-  .workout-day {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-
-  .workout-type {
-    font-size: 12px;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .exercise-list { list-style: none; }
-
-  .exercise-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
-
-  .exercise-item:last-child { border-bottom: none; }
-  .exercise-name { color: var(--text); }
-  .exercise-reps { color: var(--muted); font-size: 12px; }
-
-  .day-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .day-btn {
-    flex: 1;
-    padding: 8px;
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--muted);
-    font-size: 12px;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.04em;
-  }
-
-  .day-btn.active {
-    background: var(--gold);
-    color: var(--black);
-    border-color: var(--gold);
-    font-weight: 600;
-  }
-
-  /* BUSINESS */
-  .metric-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .metric-card {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-  }
-
-  .metric-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 600;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .metric-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  .fm-input {
-    flex: 1;
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .fm-input:focus { border-color: var(--gold); }
-  .fm-input::placeholder { color: var(--muted); }
-
-  .fm-btn {
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    white-space: nowrap;
-  }
-
-  .fm-btn:active { opacity: 0.8; }
-
-  .fm-btn-ghost {
-    background: transparent;
-    color: var(--gold);
-    border: 1px solid var(--gold-dim);
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 8px;
-  }
-
-  /* TASKS */
-  .task-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .task-item:last-child { border-bottom: none; }
-
-  .task-check {
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    cursor: pointer;
-    font-size: 11px;
-    transition: all 0.2s;
-  }
-
-  .task-check.done { background: var(--gold); border-color: var(--gold); color: var(--black); }
-  .task-text { flex: 1; font-size: 14px; color: var(--text); }
-  .task-text.done { color: var(--muted); text-decoration: line-through; }
-
-  .task-delete {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 18px;
-    cursor: pointer;
-    padding: 0 4px;
-    line-height: 1;
-  }
-
-  /* PHASE BADGE */
-  .phase-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(201,168,76,0.12);
-    border: 1px solid var(--gold-dim);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 12px;
-    color: var(--gold);
-    letter-spacing: 0.06em;
-    margin-bottom: 16px;
-  }
-
-  /* REVENUE LOG */
-  .rev-entry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-
-  .rev-entry:last-child { border-bottom: none; }
-  .rev-amount { color: var(--gold); font-weight: 600; }
-  .rev-date { color: var(--muted); font-size: 11px; }
-
-  /* SECTION HEADER */
-  .section-header {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-
-  .section-sub {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  /* STREAK */
-  .streak-display {
-    text-align: center;
-    padding: 10px 0 6px;
-  }
-
+  /* ── STREAK ──────────────────────────── */
+  .streak-display { text-align: center; padding: 8px 0 4px; }
   .streak-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 64px;
-    font-weight: 600;
-    color: var(--gold);
-    line-height: 1;
+    font-family: 'Oswald', sans-serif; font-size: 68px; font-weight: 700;
+    color: var(--blue); line-height: 1;
   }
-
   .streak-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 4px;
+    font-size: 10px; color: var(--ink); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.22em; margin-top: 6px;
   }
 
-  /* LIFE TAB */
-  .identity-item {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.5;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
+  /* ── DAY NAV ─────────────────────────── */
+  .day-nav { display: flex; gap: 6px; margin-bottom: 16px; }
+  .day-btn {
+    flex: 1; padding: 9px 0;
+    background: var(--paper); border: 1.5px solid var(--ink);
+    font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 600;
+    color: var(--ink); cursor: pointer; letter-spacing: 0.05em;
+  }
+  .day-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  .workout-day {
+    font-family: 'Oswald', sans-serif; font-size: 30px; font-weight: 700;
+    text-transform: uppercase; color: var(--ink); line-height: 1.05;
+  }
+  .workout-type {
+    font-size: 11px; color: var(--blue); font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase; margin: 4px 0 12px;
   }
 
-  .identity-item:last-child { border-bottom: none; }
-  .identity-dot { color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+  /* ── INPUTS / BUTTONS ────────────────── */
+  .input-row { display: flex; gap: 8px; margin: 12px 0; }
+  .fm-input {
+    flex: 1; min-width: 0;
+    background: var(--paper); border: 1.5px solid var(--ink);
+    padding: 11px 12px; color: var(--ink);
+    font-family: 'Barlow', sans-serif; font-size: 14px; outline: none;
+  }
+  .fm-input::placeholder { color: var(--muted); }
+  .fm-input:focus { border-color: var(--blue); }
+  .fm-btn {
+    background: var(--ink); color: #fff; border: 1.5px solid var(--ink);
+    padding: 11px 16px; cursor: pointer;
+    font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+  }
+  .fm-btn:active { background: var(--blue); border-color: var(--blue); }
+  .fm-btn-ghost {
+    width: 100%; margin-top: 10px;
+    background: var(--paper); color: var(--blue);
+    border: 1.5px solid var(--blue); padding: 10px;
+    font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;
+  }
 
-  /* TOAST */
+  /* ── METRICS ─────────────────────────── */
+  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  .metric-card {
+    background: var(--paper); border: 1.5px solid var(--ink);
+    padding: 14px; text-align: center;
+  }
+  .metric-value {
+    font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700;
+    color: var(--blue); line-height: 1;
+  }
+  .metric-label {
+    font-size: 9px; color: var(--ink); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.18em; margin-top: 5px;
+  }
+
+  /* ── TASKS / OUTREACH ────────────────── */
+  .task-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--soft-line);
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-check {
+    width: 22px; height: 22px; flex-shrink: 0;
+    border: 2px solid var(--ink); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .task-check.done { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .task-text { flex: 1; font-size: 14px; color: var(--ink); }
+  .task-text.done { color: var(--muted); text-decoration: line-through; }
+  .task-delete { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; }
+
+  .status-pill {
+    font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border: 1.5px solid; padding: 3px 8px; cursor: pointer; white-space: nowrap;
+  }
+
+  .rev-entry {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-bottom: 1px solid var(--soft-line); font-size: 13px;
+  }
+  .rev-entry:last-child { border-bottom: none; }
+  .rev-amount { font-family: 'Oswald', sans-serif; color: var(--blue); font-weight: 700; }
+  .rev-date { color: var(--muted); font-size: 10px; letter-spacing: 0.06em; }
+
+  .note { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-align: center; margin-top: 10px; text-transform: uppercase; }
+
+  .dm-text { font-size: 13px; color: var(--ink); line-height: 1.7; padding: 8px 0; }
+  .hash-text { font-size: 12px; color: var(--muted); line-height: 2; padding: 6px 0; letter-spacing: 0.03em; }
+
+  .plain-link {
+    display: block; padding: 12px 0;
+    border-bottom: 1px solid var(--soft-line);
+    color: var(--ink); text-decoration: none;
+    font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .plain-link:last-child { border-bottom: none; }
+  .plain-link span { color: var(--blue); float: right; }
+
+  /* ── TOAST ───────────────────────────── */
   .toast {
-    position: fixed;
-    top: calc(var(--safe-top) + 70px);
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: var(--gold);
-    color: var(--black);
+    position: fixed; top: calc(var(--safe-top) + 74px);
+    left: 50%; transform: translateX(-50%) translateY(-8px);
+    background: var(--ink); color: #fff;
     padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    opacity: 0;
-    transition: all 0.3s;
-    z-index: 999;
-    white-space: nowrap;
+    font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    opacity: 0; transition: all 0.3s; z-index: 999; white-space: nowrap;
   }
-
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* RESET NOTE */
-  .reset-note {
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 12px;
-    letter-spacing: 0.04em;
-  }
+  .declaration { font-size: 15px; line-height: 1.75; color: var(--ink); }
+  .declaration strong { color: var(--blue); font-weight: 600; }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-title">Focus Mode</div>
+  <div class="topbar-title">FOCUS MODE<span>.</span></div>
   <div class="topbar-date" id="topDate"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- TODAY PAGE -->
+<!-- ══════════ TODAY ══════════ -->
 <div class="page active" id="page-today">
-  <div class="section-header">Today.</div>
-  <div class="section-sub">Execute. No Excuses.</div>
+  <div class="section-header">TODAY<span>.</span></div>
+  <div class="section-sub">Execute · No Excuses · No Zero Days</div>
 
-  <div class="card card-gold">
-    <div class="card-title">Declaration</div>
-    <div class="declaration">
-      I am a man of <strong>God</strong>. I am <strong>disciplined</strong>. I am the first <strong>multi-millionaire</strong> in my family. I am a <strong>provider</strong>. I am a <strong>builder</strong>. I show up. I execute. I do not go back.
-      <br><br>
-      This is the death of the old version of me. <strong>This version scores the goals.</strong>
+  <div class="banner">
+    <div>
+      <div class="banner-kicker">The Declaration</div>
+      <div class="banner-title">Death of the old me. <em>This version scores the goals.</em></div>
+      <div class="banner-sub">God first. Disciplined. Provider. Builder. Consistent.</div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-title">Non-Negotiables</div>
     <div id="nonneg-list"></div>
-    <div class="reset-note">✦ Resets at midnight each day</div>
+    <div class="note">Resets at midnight</div>
   </div>
 
   <div class="card">
-    <div class="card-title">Daily Streak</div>
+    <div class="card-title">Streak</div>
     <div class="streak-display">
       <div class="streak-number" id="streakNum">0</div>
-      <div class="streak-label">days of no zeros</div>
+      <div class="streak-label">Days of no zeros</div>
     </div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">Daily Loop · 15 min total</div>
+    <div class="card-title">Work-Day Marketing</div>
+    <div class="item"><div><div class="item-name">Before shift</div><div class="item-desc">Post live? Reply to every comment + DM</div></div><div class="item-tag">5 MIN</div></div>
+    <div class="item"><div><div class="item-name">On break</div><div class="item-desc">Send 3 influencer DMs · log them</div></div><div class="item-tag">5 MIN</div></div>
+    <div class="item"><div><div class="item-name">After shift</div><div class="item-desc">Reply · check orders · log revenue</div></div><div class="item-tag">5 MIN</div></div>
   </div>
 </div>
 
-<!-- LIFE PAGE -->
+<!-- ══════════ LIFE ══════════ -->
 <div class="page" id="page-life">
-  <div class="section-header">Life.</div>
+  <div class="section-header">LIFE<span>.</span></div>
   <div class="section-sub">God · Vision · Identity</div>
 
-  <div class="card card-gold">
-    <div class="card-title">Faith Framework — Daily</div>
-    <div class="exercise-list">
-      <div class="exercise-item"><span class="exercise-name">Morning Prayer</span><span class="exercise-reps">10 min — before phone</span></div>
-      <div class="exercise-item"><span class="exercise-name">Scripture Reading</span><span class="exercise-reps">20 min — morning</span></div>
-      <div class="exercise-item"><span class="exercise-name">Hourly Prayer</span><span class="exercise-reps">Few times weekly</span></div>
-      <div class="exercise-item"><span class="exercise-name">Church</span><span class="exercise-reps">Most Sundays</span></div>
-    </div>
+  <div class="card">
+    <div class="card-title">Faith — Daily</div>
+    <div class="item"><div class="item-name">Morning Prayer</div><div class="item-tag blue">10 MIN</div></div>
+    <div class="item"><div class="item-name">Scripture</div><div class="item-tag blue">20 MIN</div></div>
+    <div class="item"><div class="item-name">Hourly Prayer</div><div class="item-tag">WEEKLY ×3</div></div>
+    <div class="item"><div class="item-name">Church</div><div class="item-tag">SUNDAYS</div></div>
   </div>
 
   <div class="card">
     <div class="card-title">Who You Are</div>
-    <div id="identity-list">
-      <div class="identity-item"><span class="identity-dot">◆</span>A man of God — faith is the foundation of everything you build</div>
-      <div class="identity-item"><span class="identity-dot">◆</span>Disciplined — in body, mind, business, and spirit</div>
-      <div class="identity-item"><span class="identity-dot">◆</span>The first multi-millionaire in your family — it starts with you</div>
-      <div class="identity-item"><span class="identity-dot">◆</span>A provider — for Mum, brothers, future wife, and children</div>
-      <div class="identity-item"><span class="identity-dot">◆</span>A builder — of brands, community, wealth, and legacy</div>
-      <div class="identity-item"><span class="identity-dot">◆</span>Consistent — not perfect, but present and persistent every day</div>
-      <div class="identity-item"><span class="identity-dot">◆</span>Focused — one thing at a time, done right, done fully</div>
+    <div class="declaration">
+      A man of <strong>God</strong> — faith is the foundation. <strong>Disciplined</strong> in body, mind, business and spirit. The <strong>first multi-millionaire</strong> in the family. A <strong>provider</strong> for Mum, brothers, future wife and children. A <strong>builder</strong> of brands, community, wealth and legacy. <strong>Consistent</strong> — not perfect, but present every single day.
     </div>
   </div>
 
   <div class="card">
     <div class="card-title">The Vision — 3 Years</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>Financial freedom — work 9-5 only by choice</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>Mum's expenses covered. Family provided for.</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>Travel freely — anywhere, anytime</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>Blacked-out AMG CLE — the lifestyle brand launch</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>Community built on your success</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>Ripped, lean, fast, strong — the anime physique</div>
-    <div class="identity-item"><span class="identity-dot">◆</span>A system so clean you can teach it</div>
+    <div class="item"><div class="item-name">Financial freedom</div><div class="item-desc">9-5 by choice only</div></div>
+    <div class="item"><div class="item-name">Family provided for</div><div class="item-desc">Mum's expenses covered, community built</div></div>
+    <div class="item"><div class="item-name">AMG CLE</div><div class="item-desc">Blacked out — launches the lifestyle brand</div></div>
+    <div class="item"><div class="item-name">Anime physique</div><div class="item-desc">Lean, fast, durable, abnormally strong</div></div>
+    <div class="item"><div class="item-name">A teachable system</div><div class="item-desc">So clean you can hand it to others</div></div>
   </div>
 </div>
 
-<!-- FITNESS PAGE -->
+<!-- ══════════ FITNESS ══════════ -->
 <div class="page" id="page-fitness">
-  <div class="section-header">Fitness.</div>
-  <div class="section-sub">Lean · Strong · Fast · Durable</div>
+  <div class="section-header">FITNESS<span>.</span></div>
+  <div class="section-sub">Lean · Strong · Fast · Fascia-Driven</div>
 
   <div class="day-nav" id="dayNav"></div>
 
-  <div class="card" id="workoutCard">
+  <div class="card">
     <div class="card-title">Today's Session</div>
     <div id="workoutContent"></div>
   </div>
 
-  <div class="card card-gold">
-    <div class="card-title">GOATA Daily Cues</div>
-    <div class="exercise-item"><span class="exercise-name">Heel, heel, heel</span><span class="exercise-reps">Land through the heel always</span></div>
-    <div class="exercise-item"><span class="exercise-name">Opposite arm, opposite leg</span><span class="exercise-reps">Cross-pattern every stride</span></div>
-    <div class="exercise-item"><span class="exercise-name">Loose and springy</span><span class="exercise-reps">Never stiff or rigid</span></div>
-    <div class="exercise-item"><span class="exercise-name">Tall through the crown</span><span class="exercise-reps">String pulling you upward</span></div>
-    <div class="exercise-item"><span class="exercise-name">Drive the hip through</span><span class="exercise-reps">Full extension every step</span></div>
-    <div class="exercise-item"><span class="exercise-name">Relax the jaw</span><span class="exercise-reps">Tension above kills output below</span></div>
+  <div class="card">
+    <div class="card-kicker">Movement Standard</div>
+    <div class="card-title">GOATA Cues</div>
+    <div class="item"><div><div class="item-name">Land midfoot</div><div class="item-desc">Never reach with the heel — load the arch spring</div></div></div>
+    <div class="item"><div><div class="item-name">Spiral the foot</div><div class="item-desc">Outer edge rolls in, finish through the big toe</div></div></div>
+    <div class="item"><div><div class="item-name">Opposite arm, opposite leg</div><div class="item-desc">Cross-pattern on every stride</div></div></div>
+    <div class="item"><div><div class="item-name">Loose &amp; springy</div><div class="item-desc">Fascia is elastic — never stiff or rigid</div></div></div>
+    <div class="item"><div><div class="item-name">Tall through the crown</div><div class="item-desc">String pulling you up, relaxed jaw</div></div></div>
+    <div class="item"><div><div class="item-name">Full hip extension</div><div class="item-desc">Drive the hip through every step</div></div></div>
   </div>
 
   <div class="card">
-    <div class="card-title">GOATA Movement Bank</div>
-    <div class="exercise-item"><span class="exercise-name">Bouncing</span><span class="exercise-reps">Every session — 90 sec</span></div>
-    <div class="exercise-item"><span class="exercise-name">Walking</span><span class="exercise-reps">Every session — 2-3 min</span></div>
-    <div class="exercise-item"><span class="exercise-name">Backward walking</span><span class="exercise-reps">Every session — 2-3 min</span></div>
-    <div class="exercise-item"><span class="exercise-name">Skip</span><span class="exercise-reps">Days 1, 3, 5 — 2-3 × 20m</span></div>
-    <div class="exercise-item"><span class="exercise-name">Bound</span><span class="exercise-reps">Days 3, 5 — 5-6 × each leg</span></div>
-    <div class="exercise-item"><span class="exercise-name">Lateral shuffle</span><span class="exercise-reps">Days 1, 3, 5 — 3 × 10m</span></div>
-    <div class="exercise-item"><span class="exercise-name">Bear crawl</span><span class="exercise-reps">Days 2, 6 — 3 × 10m</span></div>
-    <div class="exercise-item"><span class="exercise-name">Crab walk</span><span class="exercise-reps">Days 2, 6 — 2 × 10m</span></div>
-    <div class="exercise-item"><span class="exercise-name">GOATA crawl</span><span class="exercise-reps">Days 2, 6 — 2 × 10m</span></div>
-    <div class="exercise-item"><span class="exercise-name">Horse stance breathing</span><span class="exercise-reps">Every session — 2 × 30 sec end</span></div>
+    <div class="card-kicker">Tissue Rules</div>
+    <div class="card-title">Fascia Principles</div>
+    <div class="item"><div><div class="item-name">Bounce daily</div><div class="item-desc">Elastic recoil work trains the fascial spring</div></div></div>
+    <div class="item"><div><div class="item-name">Long holds remodel</div><div class="item-desc">90 sec+ stretches change tissue, short ones don't</div></div></div>
+    <div class="item"><div><div class="item-name">Shake to reset</div><div class="item-desc">1-2 min whole-body shaking after sessions</div></div></div>
+    <div class="item"><div><div class="item-name">Vary the angles</div><div class="item-desc">Fascia adapts to novelty — spiral, reach, twist</div></div></div>
+    <div class="item"><div><div class="item-name">Hydrate</div><div class="item-desc">Fascia is water-dependent — 2-3L daily</div></div></div>
   </div>
 
   <div class="card">
-    <div class="card-title">Nutrition Rule</div>
-    <div class="exercise-item"><span class="exercise-name">Currently</span><span class="exercise-reps">21-day fruit fast</span></div>
-    <div class="exercise-item"><span class="exercise-name">Post-fast meat</span><span class="exercise-reps">Max once per week</span></div>
-    <div class="exercise-item"><span class="exercise-name">Water daily</span><span class="exercise-reps">2-3 litres minimum</span></div>
-    <div class="exercise-item"><span class="exercise-name">No zero days</span><span class="exercise-reps">Clean eating is permanent</span></div>
+    <div class="card-title">Nutrition</div>
+    <div class="item"><div class="item-name">Current</div><div class="item-tag blue">FRUIT FAST</div></div>
+    <div class="item"><div class="item-name">Post-fast meat</div><div class="item-tag">1× WEEK MAX</div></div>
+    <div class="item"><div class="item-name">Water</div><div class="item-tag">2-3L DAILY</div></div>
   </div>
 </div>
 
-<!-- BUSINESS PAGE -->
+<!-- ══════════ BUSINESS ══════════ -->
 <div class="page" id="page-business">
-  <div class="section-header">Business.</div>
-  <div class="section-sub">Artvsta · Execute · Scale</div>
+  <div class="section-header">BUSINESS<span>.</span></div>
+  <div class="section-sub">Artvsta · Two Loops · £10K</div>
 
-  <div class="phase-badge">⬡ Phase 1 — Relaunch Artvsta</div>
+  <div class="banner">
+    <div>
+      <div class="banner-kicker">The Only Math That Matters</div>
+      <div class="banner-title">£10K = 333 orders = <em>550+ visitors/day</em></div>
+      <div class="banner-sub">Traffic is the entire game. The store already converts.</div>
+    </div>
+  </div>
 
   <div class="metric-grid">
-    <div class="metric-card">
-      <div class="metric-value" id="totalRevenue">£0</div>
-      <div class="metric-label">Total Revenue</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-value" id="monthRevenue">£0</div>
-      <div class="metric-label">This Month</div>
-    </div>
+    <div class="metric-card"><div class="metric-value" id="totalRevenue">£0</div><div class="metric-label">Total Revenue</div></div>
+    <div class="metric-card"><div class="metric-value" id="monthRevenue">£0</div><div class="metric-label">This Month</div></div>
   </div>
 
   <div class="card">
     <div class="card-title">Log Revenue</div>
     <div class="input-row">
-      <input class="fm-input" id="revInput" type="number" placeholder="£ amount" inputmode="decimal">
-      <input class="fm-input" id="revNote" type="text" placeholder="Note (optional)" style="flex:1.5">
+      <input class="fm-input" id="revInput" type="number" placeholder="£" inputmode="decimal" style="max-width:90px">
+      <input class="fm-input" id="revNote" type="text" placeholder="Note (optional)">
       <button class="fm-btn" onclick="addRevenue()">Add</button>
     </div>
     <div id="revLog"></div>
   </div>
 
   <div class="card">
-    <div class="card-title">Today's Tasks</div>
+    <div class="card-title">Tasks</div>
     <div class="input-row">
       <input class="fm-input" id="taskInput" type="text" placeholder="Add a task...">
       <button class="fm-btn" onclick="addTask()">+</button>
@@ -661,261 +470,301 @@
   </div>
 
   <div class="card">
-    <div class="card-title">Priority Fix List — Artvsta</div>
-    <div class="exercise-item"><span class="exercise-name">Rename product variants A/B/C</span><span class="exercise-reps">Critical</span></div>
-    <div class="exercise-item"><span class="exercise-name">Add all missing image alt texts</span><span class="exercise-reps">Critical</span></div>
-    <div class="exercise-item"><span class="exercise-name">Sticky Add to Cart on mobile</span><span class="exercise-reps">Critical</span></div>
-    <div class="exercise-item"><span class="exercise-name">Add compare-at prices</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Rewrite product descriptions</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Fix cross-sell / You May Also Like</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Install review app (Loox/Judge.me)</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Hide sold-out products</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Add bundle offer (3 prints save 15%)</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Set up Klaviyo email flows</span><span class="exercise-reps">High</span></div>
-    <div class="exercise-item"><span class="exercise-name">Add 20+ new products via DSers</span><span class="exercise-reps">Before relaunch</span></div>
+    <div class="card-kicker">Move only when the gate is met</div>
+    <div class="card-title">Phase Gates</div>
+    <div class="item"><div><div class="item-name">1 · Ignition — first sales</div><div class="item-desc">GATE: 21 straight days posted + first organic sale</div></div><div class="item-tag blue">NOW</div></div>
+    <div class="item"><div><div class="item-name">2 · Traction — £1-3k</div><div class="item-desc">GATE: 10-15 sales + 5 UGC pieces + 4 wks pixel data</div></div></div>
+    <div class="item"><div><div class="item-name">3 · Fuel — £3-6k</div><div class="item-desc">Ads £10/day. Scale at 2x ROAS, kill at 1.5x after £50</div></div></div>
+    <div class="item"><div><div class="item-name">4 · Scale — £10k</div><div class="item-desc">£30-50/day ads + compounding organic. Then Ambient.</div></div></div>
   </div>
 
   <div class="card">
-    <div class="card-title">Content This Week</div>
-    <div class="exercise-item"><span class="exercise-name">Daily lifestyle image</span><span class="exercise-reps">Nano Banana 2 · 3 credits</span></div>
-    <div class="exercise-item"><span class="exercise-name">3 room pan videos</span><span class="exercise-reps">Seedance 2.0 · 67 credits each</span></div>
-    <div class="exercise-item"><span class="exercise-name">Pinterest — 5 pins/day</span><span class="exercise-reps">SEO optimised</span></div>
-    <div class="exercise-item"><span class="exercise-name">UGC repost / testimonial</span><span class="exercise-reps">2-3x this week</span></div>
-    <div class="exercise-item"><span class="exercise-name">Influencer outreach</span><span class="exercise-reps">Target 5 this week</span></div>
+    <div class="card-kicker">Review in every batch session</div>
+    <div class="card-title">Weekly Scoreboard</div>
+    <div class="item"><div class="item-name">Posting streak</div><div class="item-tag blue">7/7 PASS-FAIL</div></div>
+    <div class="item"><div class="item-name">Sessions (Shopify)</div><div class="item-tag">UP VS LAST WK?</div></div>
+    <div class="item"><div class="item-name">Conversion rate</div><div class="item-tag">&gt;1%?</div></div>
+    <div class="item"><div class="item-name">Pinterest outbound clicks</div><div class="item-tag">TRENDING UP?</div></div>
+    <div class="item"><div class="item-name">Email list growth</div><div class="item-tag">GROWING?</div></div>
+    <div class="item"><div class="item-name">Outreach sent</div><div class="item-tag">15-20/WK</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">One per week, scheduled in batch</div>
+    <div class="card-title">Email Rotation — 800+ List</div>
+    <div class="item"><div><div class="item-name">Wk 1 · Collection feature</div><div class="item-desc">One collection, lifestyle imagery, styling angle</div></div></div>
+    <div class="item"><div><div class="item-name">Wk 2 · Value</div><div class="item-desc">Gallery wall guide, size guide — soft sell</div></div></div>
+    <div class="item"><div><div class="item-name">Wk 3 · Social proof</div><div class="item-desc">Reviews, UGC, best sellers</div></div></div>
+    <div class="item"><div><div class="item-name">Wk 4 · Offer</div><div class="item-desc">Time-limited discount or bundle</div></div></div>
   </div>
 </div>
 
-
-<!-- MARKETING PAGE -->
+<!-- ══════════ MARKET ══════════ -->
 <div class="page" id="page-marketing">
-  <div class="section-header">Marketing.</div>
-  <div class="section-sub">Post. Engage. Outreach. Every Day.</div>
+  <div class="section-header">MARKET<span>.</span></div>
+  <div class="section-sub">Batch Weekly · Distribute Daily</div>
 
-  <div class="card card-gold">
-    <div class="card-title">Today's Marketing Focus</div>
-    <div id="marketingFocus"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Before Your Shift — 5 mins</div>
-    <div class="exercise-item"><span class="exercise-name">Post lifestyle image to Instagram</span><span class="exercise-reps">Hook + caption + hashtags</span></div>
-    <div class="exercise-item"><span class="exercise-name">Pin same image to Pinterest</span><span class="exercise-reps">SEO title + product link</span></div>
-    <div class="exercise-item"><span class="exercise-name">Check &amp; reply to DMs</span><span class="exercise-reps">Instagram + TikTok</span></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">On Your Break — 5 mins</div>
+  <div class="card" style="border:1.5px solid var(--blue)">
+    <div class="card-kicker">Today</div>
+    <div class="card-title">Marketing Focus</div>
+    <div id="marketingFocus" style="padding-top:6px"></div>
     <div id="breakTask"></div>
   </div>
 
-  <div class="card">
-    <div class="card-title">After Your Shift — 5 mins</div>
-    <div class="exercise-item"><span class="exercise-name">Post TikTok or Instagram Reel</span><span class="exercise-reps">Use pre-made Higgsfield video</span></div>
-    <div class="exercise-item"><span class="exercise-name">Reply to new comments &amp; DMs</span><span class="exercise-reps">Respond within 1 hour for algorithm boost</span></div>
-    <div class="exercise-item"><span class="exercise-name">Follow up influencer replies</span><span class="exercise-reps">Check if anyone responded today</span></div>
+  <div class="banner">
+    <div>
+      <div class="banner-kicker">The Keystone Habit</div>
+      <div class="banner-title">Batch Session · <em>Every week</em></div>
+      <div class="banner-sub">Day off · 3 hours · content created once, distributed daily</div>
+    </div>
+    <div class="banner-tag">3 HRS</div>
   </div>
 
   <div class="card">
-    <div class="card-title">Influencer DM Template</div>
-    <div style="font-size:13px;color:var(--text);line-height:1.7;padding:4px 0">
-      "Hey [Name] Love your home content — your style is exactly what we're about at Artvsta. We create premium canvas wall art and I'd love to send you a free print to style in your space. No obligations — just genuine gifting because I think it'd look incredible in your feed. Interested?"
-    </div>
+    <div class="card-kicker">Same steps, same order, every week</div>
+    <div class="card-title">Batch Loop SOP</div>
+    <div class="item"><div><div class="item-name">1 · Review</div><div class="item-desc">Shopify + Metricool + Pinterest → "winner was X, next week more X"</div></div><div class="item-tag">15 MIN</div></div>
+    <div class="item"><div><div class="item-name">2 · Generate</div><div class="item-desc">Higgsfield: 7× 4:5 + 7× 9:16 · real prints · brand lighting</div></div><div class="item-tag">60 MIN</div></div>
+    <div class="item"><div><div class="item-name">3 · Write</div><div class="item-desc">All captions, titles, pins in one Claude session</div></div><div class="item-tag">45 MIN</div></div>
+    <div class="item"><div><div class="item-name">4 · Schedule</div><div class="item-desc">Metricool: 7 IG + 7 TikTok + 7 pins + 3 stories + 1 email</div></div><div class="item-tag">60 MIN</div></div>
+    <div class="item"><div><div class="item-name">5 · Close</div><div class="item-desc">Log batch complete · book next session vs shift rota</div></div><div class="item-tag">10 MIN</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">Caption = Hook → Feeling → CTA → 3-5 tags</div>
+    <div class="card-title">This Week's Content Plan</div>
+    <div class="item"><div><div class="item-name">Day 1 · Beixa</div><div class="item-desc">"Neutral doesn't mean boring."</div></div></div>
+    <div class="item"><div><div class="item-name">Day 2 · Golden Grass</div><div class="item-desc">"Warm tones. Soft light. A room that feels right."</div></div></div>
+    <div class="item"><div><div class="item-name">Day 3 · Verde Boho</div><div class="item-desc">"Green is a neutral. We said what we said."</div></div></div>
+    <div class="item"><div><div class="item-name">Day 4 · Boho Terracotta</div><div class="item-desc">"POV: you finally finished that wall."</div></div></div>
+    <div class="item"><div><div class="item-name">Day 5 · Cala</div><div class="item-desc">"Soft sand, warm stone, a touch of coral."</div></div></div>
+    <div class="item"><div><div class="item-name">Day 6 · Moderné</div><div class="item-desc">"Minimalist ≠ empty. The line art proves it."</div></div></div>
+    <div class="item"><div><div class="item-name">Day 7 · The Gallery</div><div class="item-desc">"Fawn. Cream. Effortless."</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Influencer DM</div>
+    <div class="dm-text">"Hey [Name] — love your home content, your style is exactly what we're about at Artvsta. We make premium canvas wall art and I'd love to send you a free print to style in your space. No obligations, just genuine gifting because I think it'd look incredible in your feed. Interested?"</div>
     <button class="fm-btn-ghost" onclick="copyDM()">Copy DM Template</button>
   </div>
 
   <div class="card">
-    <div class="card-title">Hashtag Bank</div>
-    <div style="font-size:12px;color:var(--muted);line-height:2">
-      #WallArt #CanvasPrints #GalleryWall #HomeDecorUK #ScandinavianDecor #MinimalistHome #ArtvstaHome #InteriorDesignUK #GalleryWallIdeas #AbstractArt #BotanicalPrints #NeutralHome #HomeInspo #LivingRoomDecor #BedroomDecor #CanvasWallArt #PrintsForHome #WallDecor #HomeAesthetic #MinimalistDecor
-    </div>
-    <button class="fm-btn-ghost" onclick="copyHashtags()">Copy Hashtags</button>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Weekly Outreach Tracker</div>
-    <div class="progress-wrap" style="margin-top:8px">
-      <div class="progress-label"><span id="outreachCount">0 of 20 this week</span><span id="outreachPct">0%</span></div>
+    <div class="card-title">Weekly Outreach — Target 20</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="outreachCount">0 of 20</span><span id="outreachPct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="outreachBar" style="width:0%"></div></div>
     </div>
-    <div class="input-row" style="margin-top:12px">
-      <input class="fm-input" id="outreachInput" type="text" placeholder="Influencer username...">
+    <div class="input-row">
+      <input class="fm-input" id="outreachInput" type="text" placeholder="@username">
       <button class="fm-btn" onclick="addOutreach()">+</button>
     </div>
     <div id="outreachList"></div>
   </div>
 
   <div class="card">
-    <div class="card-title">Caption Formula</div>
-    <div class="exercise-item"><span class="exercise-name">Line 1 — Hook</span><span class="exercise-reps">Stop the scroll</span></div>
-    <div class="exercise-item"><span class="exercise-name">Line 2-3 — Mood/feeling</span><span class="exercise-reps">Describe the vibe</span></div>
-    <div class="exercise-item"><span class="exercise-name">Line 4 — CTA</span><span class="exercise-reps">"Shop the link in bio"</span></div>
-    <div class="exercise-item"><span class="exercise-name">Line 5 — Hashtags</span><span class="exercise-reps">5-8 relevant tags</span></div>
+    <div class="card-title">Hashtag Bank — Use 3-5</div>
+    <div class="hash-text">#GalleryWallIdeas #CanvasPrintsUK #ScandinavianHomeDecor #AbstractWallArt #BohoBedroomDecor #WarmHomeAesthetic #BedroomWallArt #MinimalistHomeDecor #HomeDecorTikTok #ArtvstaHome</div>
+    <button class="fm-btn-ghost" onclick="copyHashtags()">Copy Hashtags</button>
   </div>
 
   <div class="card">
-    <div class="card-title">Platform Quick Links</div>
-    <a href="https://instagram.com/artvsta" target="_blank" style="display:block;padding:12px 0;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;font-size:14px">Instagram — @artvsta <span style="color:var(--muted);float:right">↗</span></a>
-    <a href="https://tiktok.com/@artvsta" target="_blank" style="display:block;padding:12px 0;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;font-size:14px">TikTok — @artvsta <span style="color:var(--muted);float:right">↗</span></a>
-    <a href="https://pinterest.com/artvsta" target="_blank" style="display:block;padding:12px 0;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;font-size:14px">Pinterest — artvsta <span style="color:var(--muted);float:right">↗</span></a>
-    <a href="https://artvsta.com" target="_blank" style="display:block;padding:12px 0;color:var(--text);text-decoration:none;font-size:14px">Artvsta Store <span style="color:var(--muted);float:right">↗</span></a>
+    <div class="card-title">Quick Links</div>
+    <a class="plain-link" href="https://artvsta.com" target="_blank">Artvsta Store <span>↗</span></a>
+    <a class="plain-link" href="https://instagram.com/artvsta" target="_blank">Instagram <span>↗</span></a>
+    <a class="plain-link" href="https://tiktok.com/@artvsta" target="_blank">TikTok <span>↗</span></a>
+    <a class="plain-link" href="https://pinterest.com/artvsta" target="_blank">Pinterest <span>↗</span></a>
+    <a class="plain-link" href="https://metricool.com" target="_blank">Metricool <span>↗</span></a>
   </div>
 </div>
 
 <nav class="tabs">
-  <button class="tab active" onclick="switchTab('today', this)">
-    <span class="tab-icon">◈</span>Today
-  </button>
-  <button class="tab" onclick="switchTab('life', this)">
-    <span class="tab-icon">✦</span>Life
-  </button>
-  <button class="tab" onclick="switchTab('fitness', this)">
-    <span class="tab-icon">◉</span>Fitness
-  </button>
-  <button class="tab" onclick="switchTab('business', this)">
-    <span class="tab-icon">◧</span>Business
-  </button>
-  <button class="tab" onclick="switchTab('marketing', this)">
-    <span class="tab-icon">◎</span>Market
-  </button>
+  <button class="tab active" onclick="switchTab('today', this)">Today</button>
+  <button class="tab" onclick="switchTab('life', this)">Life</button>
+  <button class="tab" onclick="switchTab('fitness', this)">Fitness</button>
+  <button class="tab" onclick="switchTab('business', this)">Business</button>
+  <button class="tab" onclick="switchTab('marketing', this)">Market</button>
 </nav>
 
 <script>
 // ── DATA ──────────────────────────────────────────
 const NONNEG = [
-  { id: 'faith', label: 'God First', sub: 'Prayer (10 min) + Scripture (20 min) — before anything else' },
+  { id: 'faith', label: 'God First', sub: 'Prayer (10 min) + Scripture (20 min) — before anything' },
   { id: 'workout', label: 'Complete Workout', sub: '60 minutes — follow the programme in order' },
-  { id: 'artvsta', label: 'Work on Artvsta', sub: 'Minimum 30 min focused execution' },
-  { id: 'review', label: 'Review Revenue & Tasks', sub: 'Command Centre check — every £1 matters' },
-  { id: 'nozero', label: 'No Zero Day', sub: 'Small action beats perfect inaction every time' },
+  { id: 'artvsta', label: 'Work on Artvsta', sub: 'Daily loop minimum — 15 focused minutes' },
+  { id: 'review', label: 'Review Revenue & Tasks', sub: 'Command Centre check — every £1 logged' },
+  { id: 'nozero', label: 'No Zero Day', sub: 'Small action beats perfect inaction' },
 ];
 
 const WORKOUTS = [
   {
     day: 'Day 1', type: 'Strength + Calisthenics',
     exercises: [
-      ['GOATA bouncing', '90 sec — wake up the spring'],
-      ['GOATA walking', '2 min — heel strike + arm swing'],
-      ['Backward walking', '2 min — knee care'],
-      ['Lateral shuffle', '2 × 10m each direction'],
-      ['Push-ups', '8–12 reps'],['Bodyweight squats', '15 reps — heel loaded'],
-      ['Resistance band rows', '12 reps'],['Reverse lunges', '8 each leg — full hip extension'],
-      ['Assisted Nordic curls', '3–5 reps — lower slowly'],['Glute bridges', '15 reps'],
-      ['Hollow hold', '20 sec'],['Side plank', '20–30 sec each'],
-      ['Wall sit', '30 sec'],['Horse stance', '30–45 sec'],
-      ['Doorframe chest press', '10 sec × 3 (overcoming)'],
-      ['Shadow boxing', '3 × 1 min — GOATA bounce between combos'],
-      ['Horse stance breathing', '2 × 30 sec — cool down'],
+      ['Fascial bouncing', '90 sec — ankle springs, loose body'],
+      ['GOATA walking', '2 min — midfoot, spiral to big toe'],
+      ['Backward walking', '2 min'],
+      ['Arm swings + spiral reaches', '60 sec — open the slings'],
+      ['Lateral shuffle', '2 × 10m each way'],
+      ['Push-ups', '8–12 reps'],
+      ['Bodyweight squats', '15 — rooted through midfoot'],
+      ['Resistance band rows', '12 reps'],
+      ['Reverse lunges', '8 each — full hip extension'],
+      ['Assisted Nordic curls', '3–5 — lower slowly'],
+      ['Glute bridges', '15 reps'],
+      ['Hollow hold', '20 sec'],
+      ['Side plank', '20–30 sec each'],
+      ['Wall sit', '30 sec'],
+      ['Horse stance', '30–45 sec'],
+      ['Doorframe press / towel row', '10 sec × 3 each — max intent'],
+      ['Shadow boxing', '3 × 1 min — springy bounce between combos'],
+      ['Whole-body shake', '60 sec — fascia reset'],
+      ['Horse stance breathing', '2 × 30 sec'],
     ]
   },
   {
-    day: 'Day 2', type: 'Recovery + GOATA Ground Work',
+    day: 'Day 2', type: 'Recovery + Fascia Work',
     exercises: [
-      ['Bear crawl', '2 × 10m forward + backward'],
-      ['Crab walk', '2 × 10m each direction'],
-      ['GOATA crawl', '2 × 10m'],
-      ['Lizard crawl', '2 × 5m — slow and controlled'],
-      ['Tib raises', '20 reps'],['Backward walking', '3 minutes'],['Patrick step', '10 each side'],
-      ['Couch stretch', '60 sec each'],['Deep squat hold', '60 sec'],
-      ['Hamstring stretch', '45 sec each'],['Thoracic rotations', '10 each side'],
-      ['90/90 hip stretch', '60 sec each side'],
+      ['Whole-body shaking', '2 min — wake and drain the tissue'],
+      ['Back-line stretch (forward fold)', '90 sec hold — fascia remodels past 90s'],
+      ['Front-line stretch (couch + reach)', '90 sec each side'],
+      ['Side-line stretch', '60 sec each side'],
+      ['Spiral-line twist stretch', '60 sec each side'],
+      ['Body rolling', '5 min — feet, calves, quads, back'],
+      ['Bear crawl', '2 × 10m'],
+      ['Crab walk', '2 × 10m each way'],
+      ['GOATA crawl', '2 × 10m — cross pattern'],
+      ['Tib raises', '20 reps'],
+      ['Patrick step', '10 each side'],
+      ['Backward walking', '3 min'],
       ['Horse stance breathing', '2 × 30 sec'],
     ]
   },
   {
     day: 'Day 3', type: 'HIIT + Sprint Day',
     exercises: [
-      ['GOATA bouncing', '90 sec'],['Arm swing drill', '30 sec isolated'],
-      ['GOATA skip', '2 × 20m'],['GOATA bound', '5 × each leg'],
-      ['High knees', '30 sec'],['Butt kicks', '30 sec'],
-      ['Sprint work', '6 × 40m outdoor / 8 × 15sec high knees'],
-      ['Burpees', '30 sec — land heel first'],['Squat jumps', '30 sec — absorb through heel'],
-      ['Mountain climbers', '30 sec — cross pattern'],['Shadow boxing flurries', '30 sec — GOATA bounce'],
-      ['Lateral shuffle', '30 sec — springy and reactive'],
-      ['GOATA walking cool-down', '2 min'],['Horse stance breathing', '2 × 30 sec'],
+      ['Fascial bouncing', '90 sec'],
+      ['Skipping / rebounding', '2 × 30 sec — elastic recoil'],
+      ['Arm swing drill', '30 sec — isolate the cross pattern'],
+      ['GOATA skip', '2 × 20m'],
+      ['GOATA bound', '5 × each leg'],
+      ['High knees + butt kicks', '30 sec each'],
+      ['Sprints', '6 × 40m outdoor / 8 × 15 sec high knees'],
+      ['Burpees', '30 on / 30 off — land midfoot, absorb like a spring'],
+      ['Squat jumps', '30 on / 30 off — soft elastic landing'],
+      ['Mountain climbers', '30 on / 30 off — cross pattern'],
+      ['Shadow boxing flurries', '30 on / 30 off'],
+      ['Lateral shuffle', '30 on / 30 off'],
+      ['GOATA walk cool-down', '2 min'],
+      ['Whole-body shake', '90 sec'],
+      ['Calf + hip flexor stretch', '60 sec each'],
+      ['Horse stance breathing', '2 × 30 sec'],
     ]
   },
   {
     day: 'Day 4', type: 'Full Rest',
     exercises: [
-      ['Full rest today', 'Walk only — apply GOATA heel strike consciously'],
-      ['Sleep well', 'This is where gains are made'],
-      ['Eat clean', 'Fuel recovery'],
-      ['GOATA cue', 'Heel, heel, heel — groove it into daily walking'],
+      ['Full rest', 'Walk only — midfoot spiral awareness'],
+      ['Hydrate', 'Fascia is water-dependent — 2-3L'],
+      ['Sleep', 'This is where the gains are made'],
     ]
   },
   {
     day: 'Day 5', type: 'Athletic Strength + KOT',
     exercises: [
-      ['GOATA bouncing', '90 sec'],['Backward walking', '2 min'],
-      ['GOATA skip', '2 × 20m'],['Lateral shuffle', '2 × 10m each'],
-      ['GOATA bound', '5 × each leg'],['Tib raises', '15 reps'],
-      ['Incline push-ups', '10 reps'],['Step-ups', '10 each leg — drive through heel'],
-      ['Resistance band overhead press', '12 reps'],['Single-leg glute bridge', '10 each'],
-      ['Split squats', '8 each leg'],['Assisted Nordic curls', '3–6 reps'],
-      ['Band pull-aparts', '15 reps'],['Side plank with leg raise', '15–20 sec each'],
-      ['Wall sit', '45 sec'],['Horse stance', '45–60 sec'],
-      ['Shadow boxing', '3 × 1 min — GOATA bounce footwork'],
+      ['Fascial bouncing', '90 sec'],
+      ['Backward walking', '2 min'],
+      ['GOATA skip', '2 × 20m'],
+      ['Lateral shuffle', '2 × 10m each way'],
+      ['GOATA bound', '5 × each leg'],
+      ['Tib raises', '15 reps'],
+      ['Incline push-ups', '10 reps'],
+      ['Step-ups', '10 each — midfoot rooted, full extension'],
+      ['Band overhead press', '12 reps'],
+      ['Single-leg glute bridge', '10 each'],
+      ['Split squats', '8 each leg'],
+      ['Assisted Nordic curls', '3–6 reps'],
+      ['Band pull-aparts', '15 reps'],
+      ['Side plank + leg raise', '15–20 sec each'],
+      ['Wall sit', '45 sec'],
+      ['Horse stance', '45–60 sec'],
+      ['Overcoming calf raise vs wall', '10 sec × 3'],
+      ['Shadow boxing', '3 × 1 min — springy footwork'],
       ['Horse stance breathing', '2 × 30 sec'],
     ]
   },
   {
-    day: 'Day 6', type: 'GOATA Flow Day',
+    day: 'Day 6', type: 'Fascia Flow Day',
     exercises: [
-      ['GOATA bouncing', '2 min — find the spring'],
-      ['GOATA walking', '3 min — heel, arm swing, hip extension'],
+      ['Fascial bouncing', '2 min — find the spring'],
+      ['GOATA walking', '3 min — midfoot, spiral, hip drive'],
       ['Backward walking', '2 min'],
-      ['GOATA skip', '3 × 20m — rhythm and hip drive'],
+      ['Cat-cow wave', '10 slow waves — spine as one chain'],
+      ['Spiral reaches', '8 each side — reach, rotate, lengthen'],
+      ["World's greatest stretch", '5 each side — flow, not force'],
+      ['GOATA skip', '3 × 20m'],
       ['Bear crawl', '3 × 10m'],
-      ['Crab walk', '2 × 10m each direction'],
+      ['Crab walk', '2 × 10m each way'],
       ['GOATA crawl', '2 × 10m'],
-      ['Lateral shuffle', '3 × 10m each direction'],
+      ['Lateral shuffle', '3 × 10m each way'],
       ['GOATA bound', '6 × each leg'],
       ['Horse stance', '2 × 45 sec'],
-      ['Shadow boxing flow', '2 × 1 min — footwork only, no power'],
-      ['Horse stance breathing', '2 × 30 sec — full reset'],
+      ['Shadow boxing flow', '2 × 1 min — footwork only'],
+      ['Whole-body shaking', '2 min — full reset'],
+      ['Horse stance breathing', '2 × 30 sec'],
     ]
   },
   {
     day: 'Day 7', type: 'Full Rest',
     exercises: [
-      ['Full rest — no training', 'Church, family, recovery'],
-      ['GOATA daily life', 'Heel strike + arm swing on every walk today'],
-      ['Plan next week', 'Check shift schedule, assign workout days'],
+      ['No training', 'Church, family, food, recovery'],
+      ['GOATA daily life', 'Midfoot spiral on every walk today'],
+      ['Plan the week', 'Shift rota → assign sessions + batch day'],
     ]
   },
+];
+
+const MARKETING_FOCUS = [
+  'Review day — check what worked this week',
+  'Post & engage — content live before shift',
+  'Outreach day — 3 influencer DMs on break',
+  'Video day — TikTok goes live today',
+  'Pinterest day — pins with SEO descriptions',
+  'Stories day — polls + room inspo on IG',
+  'Outreach day — 3 more DMs + follow-ups',
+];
+
+const BREAK_TASKS = [
+  'Check analytics — note the top performer',
+  'Reply to every comment and DM on IG + TikTok',
+  'Send 3 influencer DMs — #homedecoruk #gallerywall',
+  'Post TikTok — pre-made video, trending audio',
+  'Pin to Pinterest with SEO description',
+  'Post IG story — poll or question sticker',
+  'Send 3 DMs — follow up any replies',
 ];
 
 // ── STATE ─────────────────────────────────────────
 function getState() {
   try { return JSON.parse(localStorage.getItem('fm_state') || '{}'); } catch(e) { return {}; }
 }
-
 function saveState(updates) {
   const s = getState();
   Object.assign(s, updates);
   localStorage.setItem('fm_state', JSON.stringify(s));
 }
+function getToday() { return new Date().toISOString().slice(0, 10); }
 
-function getToday() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-// ── TOP DATE ──────────────────────────────────────
+// ── UI BASICS ─────────────────────────────────────
 function setDate() {
   const now = new Date();
-  const opts = { weekday: 'short', day: 'numeric', month: 'short' };
-  document.getElementById('topDate').textContent = now.toLocaleDateString('en-GB', opts).toUpperCase();
+  document.getElementById('topDate').textContent =
+    now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).toUpperCase();
 }
-
-// ── TABS ──────────────────────────────────────────
 function switchTab(name, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   btn.classList.add('active');
 }
-
-// ── TOAST ─────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -928,16 +777,14 @@ function renderNonNeg() {
   const s = getState();
   const today = getToday();
   const checked = (s.nonneg_date === today) ? (s.nonneg_checked || []) : [];
-  const done = checked.length;
-  const total = NONNEG.length;
+  const done = checked.length, total = NONNEG.length;
 
   const wrap = document.getElementById('nonneg-list');
   wrap.innerHTML = `
     <div class="progress-wrap">
       <div class="progress-label"><span>${done} of ${total} done</span><span>${Math.round(done/total*100)}%</span></div>
       <div class="progress-bar"><div class="progress-fill" style="width:${done/total*100}%"></div></div>
-    </div>
-  `;
+    </div>`;
 
   NONNEG.forEach(item => {
     const isDone = checked.includes(item.id);
@@ -945,28 +792,21 @@ function renderNonNeg() {
     el.className = 'nonneg-item' + (isDone ? ' done-item' : '');
     el.innerHTML = `
       <div class="nonneg-check ${isDone ? 'done' : ''}">${isDone ? '✓' : ''}</div>
-      <div class="nonneg-text">
-        <div class="nonneg-label">${item.label}</div>
-        <div class="nonneg-sub">${item.sub}</div>
-      </div>
-    `;
+      <div><div class="nonneg-label">${item.label}</div><div class="nonneg-sub">${item.sub}</div></div>`;
     el.onclick = () => toggleNonNeg(item.id);
     wrap.appendChild(el);
   });
 
-  // Update streak
   updateStreak(done === total);
 }
-
 function toggleNonNeg(id) {
   const s = getState();
   const today = getToday();
   let checked = (s.nonneg_date === today) ? (s.nonneg_checked || []) : [];
-  if (checked.includes(id)) {
-    checked = checked.filter(x => x !== id);
-  } else {
+  if (checked.includes(id)) checked = checked.filter(x => x !== id);
+  else {
     checked.push(id);
-    if (checked.length === NONNEG.length) showToast('All 5 done. Day complete. 🔥');
+    if (checked.length === NONNEG.length) showToast('All 5 done. Day complete.');
   }
   saveState({ nonneg_checked: checked, nonneg_date: today });
   renderNonNeg();
@@ -977,20 +817,17 @@ function updateStreak(allDone) {
   const s = getState();
   const today = getToday();
   let streak = s.streak || 0;
-  let lastComplete = s.last_complete || '';
-
+  const lastComplete = s.last_complete || '';
   if (allDone && lastComplete !== today) {
     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
     streak = (lastComplete === yesterday) ? streak + 1 : 1;
     saveState({ streak, last_complete: today });
   }
-
-  document.getElementById('streakNum').textContent = s.streak || (allDone ? streak : 0);
+  document.getElementById('streakNum').textContent = getState().streak || 0;
 }
 
 // ── WORKOUT ───────────────────────────────────────
 let currentDay = 0;
-
 function renderWorkoutNav() {
   const s = getState();
   currentDay = s.workout_day || 0;
@@ -1000,33 +837,19 @@ function renderWorkoutNav() {
     const btn = document.createElement('button');
     btn.className = 'day-btn' + (i === currentDay ? ' active' : '');
     btn.textContent = 'D' + (i+1);
-    btn.onclick = () => setWorkoutDay(i);
+    btn.onclick = () => { currentDay = i; saveState({ workout_day: i }); renderWorkoutNav(); };
     nav.appendChild(btn);
   });
   renderWorkout();
 }
-
-function setWorkoutDay(i) {
-  currentDay = i;
-  saveState({ workout_day: i });
-  renderWorkoutNav();
-}
-
 function renderWorkout() {
   const w = WORKOUTS[currentDay];
-  const content = document.getElementById('workoutContent');
-  content.innerHTML = `
+  document.getElementById('workoutContent').innerHTML = `
     <div class="workout-day">${w.day}</div>
     <div class="workout-type">${w.type}</div>
-    <ul class="exercise-list">
-      ${w.exercises.map(([name, reps]) => `
-        <li class="exercise-item">
-          <span class="exercise-name">${name}</span>
-          <span class="exercise-reps">${reps}</span>
-        </li>
-      `).join('')}
-    </ul>
-  `;
+    ${w.exercises.map(([name, reps]) => `
+      <div class="item"><div><div class="item-name">${name}</div><div class="item-desc">${reps}</div></div></div>
+    `).join('')}`;
 }
 
 // ── REVENUE ───────────────────────────────────────
@@ -1034,46 +857,33 @@ function addRevenue() {
   const amt = parseFloat(document.getElementById('revInput').value);
   const note = document.getElementById('revNote').value.trim();
   if (!amt || amt <= 0) return;
-
   const s = getState();
   const log = s.rev_log || [];
-  const today = getToday();
-  const month = today.slice(0, 7);
-
-  log.unshift({ amount: amt, note, date: today });
+  log.unshift({ amount: amt, note, date: getToday() });
   saveState({ rev_log: log });
   document.getElementById('revInput').value = '';
   document.getElementById('revNote').value = '';
   renderRevenue();
-  showToast(`£${amt.toFixed(2)} logged 💰`);
+  showToast('£' + amt.toFixed(2) + ' logged');
 }
-
 function renderRevenue() {
   const s = getState();
   const log = s.rev_log || [];
-  const today = getToday();
-  const month = today.slice(0, 7);
-
+  const month = getToday().slice(0, 7);
   const total = log.reduce((sum, e) => sum + e.amount, 0);
   const monthTotal = log.filter(e => e.date.startsWith(month)).reduce((sum, e) => sum + e.amount, 0);
-
   document.getElementById('totalRevenue').textContent = '£' + total.toFixed(0);
   document.getElementById('monthRevenue').textContent = '£' + monthTotal.toFixed(0);
-
-  const logEl = document.getElementById('revLog');
-  if (log.length === 0) {
-    logEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;text-align:center">First sale incoming ⬡</div>';
+  const el = document.getElementById('revLog');
+  if (!log.length) {
+    el.innerHTML = '<div class="note">First sale incoming</div>';
     return;
   }
-  logEl.innerHTML = log.slice(0, 8).map(e => `
+  el.innerHTML = log.slice(0, 8).map(e => `
     <div class="rev-entry">
       <span>${e.note || 'Sale'}</span>
-      <div style="text-align:right">
-        <div class="rev-amount">£${e.amount.toFixed(2)}</div>
-        <div class="rev-date">${e.date}</div>
-      </div>
-    </div>
-  `).join('');
+      <div style="text-align:right"><div class="rev-amount">£${e.amount.toFixed(2)}</div><div class="rev-date">${e.date}</div></div>
+    </div>`).join('');
 }
 
 // ── TASKS ─────────────────────────────────────────
@@ -1081,7 +891,6 @@ function addTask() {
   const input = document.getElementById('taskInput');
   const text = input.value.trim();
   if (!text) return;
-
   const s = getState();
   const tasks = s.tasks || [];
   tasks.unshift({ id: Date.now(), text, done: false });
@@ -1089,27 +898,21 @@ function addTask() {
   input.value = '';
   renderTasks();
 }
-
 function toggleTask(id) {
   const s = getState();
-  const tasks = (s.tasks || []).map(t => t.id === id ? { ...t, done: !t.done } : t);
-  saveState({ tasks });
+  saveState({ tasks: (s.tasks || []).map(t => t.id === id ? { ...t, done: !t.done } : t) });
   renderTasks();
 }
-
 function deleteTask(id) {
   const s = getState();
-  const tasks = (s.tasks || []).filter(t => t.id !== id);
-  saveState({ tasks });
+  saveState({ tasks: (s.tasks || []).filter(t => t.id !== id) });
   renderTasks();
 }
-
 function renderTasks() {
-  const s = getState();
-  const tasks = s.tasks || [];
+  const tasks = getState().tasks || [];
   const el = document.getElementById('taskList');
-  if (tasks.length === 0) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;text-align:center">No tasks yet — add one above</div>';
+  if (!tasks.length) {
+    el.innerHTML = '<div class="note">No tasks yet</div>';
     return;
   }
   el.innerHTML = tasks.map(t => `
@@ -1117,67 +920,34 @@ function renderTasks() {
       <div class="task-check ${t.done ? 'done' : ''}" onclick="toggleTask(${t.id})">${t.done ? '✓' : ''}</div>
       <span class="task-text ${t.done ? 'done' : ''}">${t.text}</span>
       <button class="task-delete" onclick="deleteTask(${t.id})">×</button>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
-// ── ENTER KEY ─────────────────────────────────────
-document.getElementById('taskInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
-document.getElementById('revInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
-
 
 // ── MARKETING ─────────────────────────────────────
-const BREAK_TASKS = [
-  { day: 0, task: 'Reply to every comment and DM on Instagram & TikTok', icon: '💬' },
-  { day: 1, task: 'Send 3 influencer outreach DMs — search #homedecoruk #gallerywall', icon: '📩' },
-  { day: 2, task: 'Post a TikTok — use a pre-made Higgsfield video, add trending audio', icon: '🎵' },
-  { day: 3, task: 'Pin 5 products to Pinterest boards with SEO descriptions', icon: '📌' },
-  { day: 4, task: 'Post an Instagram Story — poll, question or room inspo', icon: '📱' },
-  { day: 5, task: 'Send 3 more influencer DMs — follow up any previous replies', icon: '📩' },
-  { day: 6, task: 'Check analytics — note top performing content this week', icon: '📊' },
-];
-
-const MARKETING_FOCUS = [
-  'Post & Engage — Get content live before your shift starts',
-  'Outreach Day — 3 influencer DMs on your break',
-  'Video Day — TikTok + Reel goes live today',
-  'Pinterest Day — 5 pins with SEO descriptions',
-  'Stories Day — polls and room inspo on Instagram',
-  'Outreach Day — 3 more influencer DMs today',
-  'Review Day — check what worked this week',
-];
-
 function renderMarketingFocus() {
   const day = new Date().getDay();
-  const focus = MARKETING_FOCUS[day] || MARKETING_FOCUS[0];
-  const breakT = BREAK_TASKS[day] || BREAK_TASKS[0];
-  
-  document.getElementById('marketingFocus').innerHTML = `
-    <div style="font-size:16px;color:var(--text);font-weight:500;line-height:1.5">${focus}</div>
-  `;
-  
-  document.getElementById('breakTask').innerHTML = `
-    <div class="exercise-item">
-      <span class="exercise-name">${breakT.icon} ${breakT.task}</span>
-    </div>
-  `;
+  document.getElementById('marketingFocus').innerHTML =
+    `<div style="font-family:'Oswald',sans-serif;font-size:17px;font-weight:600;text-transform:uppercase">${MARKETING_FOCUS[day]}</div>`;
+  document.getElementById('breakTask').innerHTML =
+    `<div class="item" style="border:none;padding-top:8px"><div><div class="item-desc">BREAK TASK: ${BREAK_TASKS[day]}</div></div></div>`;
 }
-
 function copyDM() {
-  const text = "Hey [Name] Love your home content — your style is exactly what we're about at Artvsta. We create premium canvas wall art and I'd love to send you a free print to style in your space. No obligations — just genuine gifting because I think it'd look incredible in your feed. Interested?";
-  navigator.clipboard.writeText(text).then(() => showToast('DM template copied! 📩'));
+  const text = "Hey [Name] — love your home content, your style is exactly what we're about at Artvsta. We make premium canvas wall art and I'd love to send you a free print to style in your space. No obligations, just genuine gifting because I think it'd look incredible in your feed. Interested?";
+  navigator.clipboard.writeText(text).then(() => showToast('DM copied'));
 }
-
 function copyHashtags() {
-  const text = '#WallArt #CanvasPrints #GalleryWall #HomeDecorUK #ScandinavianDecor #MinimalistHome #ArtvstaHome #InteriorDesignUK #GalleryWallIdeas #AbstractArt #BotanicalPrints #NeutralHome #HomeInspo #LivingRoomDecor #BedroomDecor #CanvasWallArt #PrintsForHome #WallDecor #HomeAesthetic #MinimalistDecor';
-  navigator.clipboard.writeText(text).then(() => showToast('Hashtags copied! #️⃣'));
+  const text = '#GalleryWallIdeas #CanvasPrintsUK #ScandinavianHomeDecor #AbstractWallArt #BohoBedroomDecor #WarmHomeAesthetic #BedroomWallArt #MinimalistHomeDecor #HomeDecorTikTok #ArtvstaHome';
+  navigator.clipboard.writeText(text).then(() => showToast('Hashtags copied'));
 }
-
+function getWeekKey() {
+  const now = new Date();
+  const start = new Date(now.setDate(now.getDate() - now.getDay()));
+  return 'week_' + start.toISOString().slice(0, 10);
+}
 function addOutreach() {
   const input = document.getElementById('outreachInput');
-  const username = input.value.trim();
+  const username = input.value.trim().replace(/^@/, '');
   if (!username) return;
-
   const s = getState();
   const week = getWeekKey();
   const list = s['outreach_' + week] || [];
@@ -1185,53 +955,41 @@ function addOutreach() {
   saveState({ ['outreach_' + week]: list });
   input.value = '';
   renderOutreach();
-  showToast('Outreach logged! 📩');
+  showToast('Outreach logged');
 }
-
 function toggleOutreachStatus(idx) {
   const s = getState();
   const week = getWeekKey();
   const list = s['outreach_' + week] || [];
   const statuses = ['sent', 'replied', 'gifting'];
-  const current = list[idx].status;
-  const next = statuses[(statuses.indexOf(current) + 1) % statuses.length];
-  list[idx].status = next;
+  list[idx].status = statuses[(statuses.indexOf(list[idx].status) + 1) % statuses.length];
   saveState({ ['outreach_' + week]: list });
   renderOutreach();
 }
-
-function getWeekKey() {
-  const now = new Date();
-  const start = new Date(now.setDate(now.getDate() - now.getDay()));
-  return 'week_' + start.toISOString().slice(0, 10);
-}
-
 function renderOutreach() {
   const s = getState();
-  const week = getWeekKey();
-  const list = s['outreach_' + week] || [];
-  const total = 20;
-  const count = list.length;
+  const list = s['outreach_' + getWeekKey()] || [];
+  const count = list.length, total = 20;
   const pct = Math.min(Math.round(count / total * 100), 100);
-
-  document.getElementById('outreachCount').textContent = count + ' of ' + total + ' this week';
+  document.getElementById('outreachCount').textContent = count + ' of ' + total;
   document.getElementById('outreachPct').textContent = pct + '%';
   document.getElementById('outreachBar').style.width = pct + '%';
-
   const el = document.getElementById('outreachList');
-  if (list.length === 0) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;text-align:center">No outreach logged yet this week</div>';
+  if (!list.length) {
+    el.innerHTML = '<div class="note">No outreach logged this week</div>';
     return;
   }
-
-  const statusColors = { sent: '#555', replied: '#C9A84C', gifting: '#4CAF50' };
+  const colors = { sent: '#8a8a8a', replied: '#1D4ED8', gifting: '#0E8A3E' };
   el.innerHTML = list.map((item, i) => `
     <div class="task-item">
-      <div class="task-text">@${item.username}</div>
-      <span onclick="toggleOutreachStatus(${i})" style="font-size:11px;color:${statusColors[item.status]};cursor:pointer;border:1px solid ${statusColors[item.status]};padding:3px 8px;border-radius:10px;white-space:nowrap">${item.status}</span>
-    </div>
-  `).join('');
+      <span class="task-text">@${item.username}</span>
+      <span class="status-pill" style="color:${colors[item.status]};border-color:${colors[item.status]}" onclick="toggleOutreachStatus(${i})">${item.status}</span>
+    </div>`).join('');
 }
+
+// ── ENTER KEYS ────────────────────────────────────
+document.getElementById('taskInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
+document.getElementById('outreachInput').addEventListener('keydown', e => { if (e.key === 'Enter') addOutreach(); });
 
 // ── INIT ──────────────────────────────────────────
 setDate();
