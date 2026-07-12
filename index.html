@@ -470,12 +470,9 @@
   </div>
 
   <div class="card">
-    <div class="card-kicker">Move only when the gate is met</div>
+    <div class="card-kicker">Tap your current phase — move only when the gate is met</div>
     <div class="card-title">Phase Gates</div>
-    <div class="item"><div><div class="item-name">1 · Ignition — first sales</div><div class="item-desc">GATE: 21 straight days posted + first organic sale</div></div><div class="item-tag blue">NOW</div></div>
-    <div class="item"><div><div class="item-name">2 · Traction — £1-3k</div><div class="item-desc">GATE: 10-15 sales + 5 UGC pieces + 4 wks pixel data</div></div></div>
-    <div class="item"><div><div class="item-name">3 · Fuel — £3-6k</div><div class="item-desc">Ads £10/day. Scale at 2x ROAS, kill at 1.5x after £50</div></div></div>
-    <div class="item"><div><div class="item-name">4 · Scale — £10k</div><div class="item-desc">£30-50/day ads + compounding organic. Then Ambient.</div></div></div>
+    <div id="phaseGates"></div>
   </div>
 
   <div class="card">
@@ -526,20 +523,24 @@
     <div class="item"><div><div class="item-name">1 · Review</div><div class="item-desc">Shopify + Metricool + Pinterest → "winner was X, next week more X"</div></div><div class="item-tag">15 MIN</div></div>
     <div class="item"><div><div class="item-name">2 · Generate</div><div class="item-desc">Higgsfield: 7× 4:5 + 7× 9:16 · real prints · brand lighting</div></div><div class="item-tag">60 MIN</div></div>
     <div class="item"><div><div class="item-name">3 · Write</div><div class="item-desc">All captions, titles, pins in one Claude session</div></div><div class="item-tag">45 MIN</div></div>
-    <div class="item"><div><div class="item-name">4 · Schedule</div><div class="item-desc">Metricool: 7 IG + 7 TikTok + 7 pins + 3 stories + 1 email</div></div><div class="item-tag">60 MIN</div></div>
+    <div class="item"><div><div class="item-name">4 · Schedule</div><div class="item-desc">Native tools: 7 IG (app) + 7 TikTok (Studio desktop) + 7 pins (Pinterest) + 1 email</div></div><div class="item-tag">60 MIN</div></div>
     <div class="item"><div><div class="item-name">5 · Close</div><div class="item-desc">Log batch complete · book next session vs shift rota</div></div><div class="item-tag">10 MIN</div></div>
   </div>
 
   <div class="card">
-    <div class="card-kicker">Caption = Hook → Feeling → CTA → 3-5 tags</div>
+    <div class="card-kicker">Auto-rotates every week — never needs editing</div>
     <div class="card-title">This Week's Content Plan</div>
-    <div class="item"><div><div class="item-name">Day 1 · Beixa</div><div class="item-desc">"Neutral doesn't mean boring."</div></div></div>
-    <div class="item"><div><div class="item-name">Day 2 · Golden Grass</div><div class="item-desc">"Warm tones. Soft light. A room that feels right."</div></div></div>
-    <div class="item"><div><div class="item-name">Day 3 · Verde Boho</div><div class="item-desc">"Green is a neutral. We said what we said."</div></div></div>
-    <div class="item"><div><div class="item-name">Day 4 · Boho Terracotta</div><div class="item-desc">"POV: you finally finished that wall."</div></div></div>
-    <div class="item"><div><div class="item-name">Day 5 · Cala</div><div class="item-desc">"Soft sand, warm stone, a touch of coral."</div></div></div>
-    <div class="item"><div><div class="item-name">Day 6 · Moderné</div><div class="item-desc">"Minimalist ≠ empty. The line art proves it."</div></div></div>
-    <div class="item"><div><div class="item-name">Day 7 · The Gallery</div><div class="item-desc">"Fawn. Cream. Effortless."</div></div></div>
+    <div id="weekPlan"></div>
+    <div class="note">Collections rotate automatically by week</div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">All free · all native · no post caps that matter</div>
+    <div class="card-title">Scheduling Stack</div>
+    <div class="item"><div><div class="item-name">Instagram + Reels</div><div class="item-desc">Schedule in-app (professional account) or Meta Business Suite — free</div></div><div class="item-tag blue">NATIVE</div></div>
+    <div class="item"><div><div class="item-name">TikTok</div><div class="item-desc">TikTok Studio on desktop browser — free, up to 10 days ahead</div></div><div class="item-tag blue">NATIVE</div></div>
+    <div class="item"><div><div class="item-name">Pinterest</div><div class="item-desc">Native pin scheduler — free, publish days ahead</div></div><div class="item-tag blue">NATIVE</div></div>
+    <div class="item"><div><div class="item-name">Metricool</div><div class="item-desc">Optional — analytics dashboard only, not needed for publishing</div></div><div class="item-tag">OPTIONAL</div></div>
   </div>
 
   <div class="card">
@@ -573,7 +574,8 @@
     <a class="plain-link" href="https://instagram.com/artvsta" target="_blank">Instagram <span>↗</span></a>
     <a class="plain-link" href="https://tiktok.com/@artvsta" target="_blank">TikTok <span>↗</span></a>
     <a class="plain-link" href="https://pinterest.com/artvsta" target="_blank">Pinterest <span>↗</span></a>
-    <a class="plain-link" href="https://metricool.com" target="_blank">Metricool <span>↗</span></a>
+    <a class="plain-link" href="https://www.tiktok.com/tiktokstudio" target="_blank">TikTok Studio (Scheduler) <span>↗</span></a>
+    <a class="plain-link" href="https://business.facebook.com" target="_blank">Meta Business Suite <span>↗</span></a>
   </div>
 </div>
 
@@ -987,6 +989,60 @@ function renderOutreach() {
     </div>`).join('');
 }
 
+// ── WEEK PLAN (auto-rotating) ─────────────────────
+const COLLECTIONS = [
+  ['Beixa', "Neutral doesn't mean boring."],
+  ['Golden Grass', 'Warm tones. Soft light. A room that feels right.'],
+  ['Verde Boho', 'Green is a neutral. We said what we said.'],
+  ['Rhapsody', 'Warm orange. Earthy brown. Instant cosy.'],
+  ['Cala', 'Soft sand, warm stone, a touch of coral.'],
+  ['Moderné', 'Minimalist doesn\'t mean empty. The line art proves it.'],
+  ['The Gallery', 'Fawn. Cream. Effortless.'],
+  ['Dotorea', 'Botanicals, but make them calm.'],
+  ['Le Choix', 'Olive tones for grounded rooms.'],
+  ['Sands', 'Beige is a whole personality.'],
+  ['The Galerie', 'Dark botanicals. Big mood.'],
+  ['Muette', 'Muted tones speak loudest.'],
+  ['Amalfi', 'Bring the coast home.'],
+  ['Lignes', 'One line. Whole vibe.'],
+  ['Genova', 'Grey and gold. Quiet luxury.'],
+  ['Love Is Everything', 'Blush pink bedroom energy.'],
+];
+const DAY_TYPES = ['LIFESTYLE','CLOSE-UP','VIDEO','UGC/REVIEW','LIFESTYLE','STYLED','VIDEO'];
+
+function renderWeekPlan() {
+  const weekIdx = Math.floor(Date.now() / (7 * 864e5));
+  const el = document.getElementById('weekPlan');
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const [name, hook] = COLLECTIONS[(weekIdx + i) % COLLECTIONS.length];
+    html += `<div class="item"><div><div class="item-name">Day ${i+1} · ${name}</div><div class="item-desc">"${hook}"</div></div><div class="item-tag">${DAY_TYPES[i]}</div></div>`;
+  }
+  el.innerHTML = html;
+}
+
+// ── PHASE GATES ───────────────────────────────────
+const PHASES = [
+  ['1 · Ignition — first sales', 'GATE: 21 straight days posted + first organic sale'],
+  ['2 · Traction — £1-3k', 'GATE: 10-15 sales + 5 UGC pieces + 4 wks pixel data'],
+  ['3 · Fuel — £3-6k', 'Ads £10/day. Scale at 2x ROAS, kill at 1.5x after £50'],
+  ['4 · Scale — £10k', '£30-50/day ads + compounding organic. Then Ambient.'],
+];
+function renderPhases() {
+  const current = getState().phase || 0;
+  const el = document.getElementById('phaseGates');
+  el.innerHTML = PHASES.map(([name, desc], i) => `
+    <div class="item" style="cursor:pointer" onclick="setPhase(${i})">
+      <div><div class="item-name" ${i === current ? 'style="color:var(--blue)"' : ''}>${name}</div><div class="item-desc">${desc}</div></div>
+      ${i === current ? '<div class="item-tag blue">NOW</div>' : ''}
+    </div>`).join('');
+}
+function setPhase(i) {
+  saveState({ phase: i });
+  renderPhases();
+  showToast('Phase ' + (i+1) + ' set');
+}
+
 // ── ENTER KEYS ────────────────────────────────────
 document.getElementById('taskInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
 document.getElementById('outreachInput').addEventListener('keydown', e => { if (e.key === 'Enter') addOutreach(); });
@@ -999,6 +1055,8 @@ renderRevenue();
 renderTasks();
 renderMarketingFocus();
 renderOutreach();
+renderWeekPlan();
+renderPhases();
 </script>
 </body>
 </html>
